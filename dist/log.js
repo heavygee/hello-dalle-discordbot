@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logMessage = logMessage;
-const config_1 = require("../src/config");
+const config_1 = require("./config");
 /**
  * Logs a message to the bot spam channel of the specified guild.
  * If the guild is not provided, logs the message to the first available guild's bot spam channel.

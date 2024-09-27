@@ -1,5 +1,5 @@
 import { Client, Guild, TextChannel } from 'discord.js';
-import { BOTSPAM_CHANNEL_ID } from '../src/config';
+import { BOTSPAM_CHANNEL_ID } from './config';
 
 /**
  * Logs a message to the bot spam channel of the specified guild.

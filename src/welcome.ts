@@ -1,7 +1,7 @@
 import { Client, Guild, GuildMember, TextChannel } from 'discord.js';
-import { WELCOME_CHANNEL_NAME, WELCOME_PROMPT, OPENAI_API_KEY, getWILDCARD, DEBUG, GENERAL_CHANNEL_ID } from '../src/config';
-import { logMessage } from '../src/log';
-import { readWelcomeCount, writeWelcomeCount } from '../src/utils';
+import { WELCOME_CHANNEL_NAME, WELCOME_PROMPT, OPENAI_API_KEY, getWILDCARD, DEBUG, GENERAL_CHANNEL_ID } from './config';
+import { logMessage } from './log';
+import { readWelcomeCount, writeWelcomeCount } from './utils';
 import axios, { AxiosError } from 'axios';
 import fs from 'fs';
 import path from 'path';
