@@ -1,4 +1,4 @@
-import { DEBUG } from '../config';
+import { DEBUG, OPENAI_API_KEY } from '../config';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +20,7 @@ export async function generateImage(prompt: string): Promise<string> {
             size: "1024x1024"
         }, {
             headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -33,32 +33,51 @@ export async function generateImage(prompt: string): Promise<string> {
 }
 
 // Function to describe the image using GPT-4 Vision API
-export async function describeImage(imagePath: string): Promise<string> {
-    console.log(`DEBUG: Describing image: ${imagePath}`);
+export async function describeImage(imagePath: string, imageUrl: string): Promise<string> {
+    if (DEBUG) console.log(`DEBUG: Describing image from URL: ${imageUrl}`);
+    if (DEBUG) console.log(`DEBUG: Local image path: ${imagePath}`);
 
     try {
         // Read the image from the filesystem and encode it as base64
         const image = fs.readFileSync(imagePath, { encoding: 'base64' });
         const base64Image = `data:image/png;base64,${image}`;  // Add correct MIME type
 
-        // Prepare the request payload for OpenAI GPT-4
+        // In DEBUG mode, save the base64 string to a file for inspection
+        if (DEBUG) {
+            const base64FilePath = path.join(tempDir, `base64_image_${Date.now()}.txt`);
+            fs.writeFileSync(base64FilePath, base64Image);
+            console.log(`DEBUG: Full base64 image string saved to: ${base64FilePath}`);
+        }
+
+        // Prepare the request payload for OpenAI GPT-4 Vision
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
             model: 'gpt-4-turbo',
             messages: [
                 {
                     role: 'user',
-                    content: `This image is used as a profile pic. Describe its main feature concisely: ${base64Image}`
+                    content: [
+                        {
+                            type: 'text',
+                            text: "What’s in this image?"
+                        },
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: base64Image  // Send the base64 image as an 'image_url'
+                            }
+                        }
+                    ]
                 }
             ],
             max_tokens: 30 // Limit the response length
         }, {
             headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
                 'Content-Type': 'application/json'
             }
         });
 
-        console.log(`DEBUG: Image described: ${response.data.choices[0].message.content}`);
+        if (DEBUG) console.log(`DEBUG: Image described: ${response.data.choices[0].message.content}`);
         return response.data.choices[0].message.content;
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);

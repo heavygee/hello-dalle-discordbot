@@ -25,7 +25,7 @@ export async function welcomeUser(client: Client, member: GuildMember): Promise<
         await downloadAndSaveImage(avatarUrl, avatarPath);
 
         // Describe the avatar image
-        const avatarDescription = await describeImage(avatarPath);
+        const avatarDescription = await describeImage(avatarPath, avatarUrl);
         console.log(`Submitted avatar for description, result: ${avatarDescription}`);
 
         // Generate prompt with the avatar description

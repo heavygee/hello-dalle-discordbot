@@ -1,10 +1,14 @@
 import { Client, GatewayIntentBits, Guild, GuildMember, Message } from 'discord.js';
-import { DISCORD_BOT_TOKEN, VERSION, BOTSPAM_CHANNEL_ID, getWILDCARD, DEBUG, GENERAL_CHANNEL_ID, setWILDCARD } from './config';
+import {
+    welcomeCommand,
+    welcomeNewMember,
+    handleWildcardCommand,
+    handlePfpCommand,
+    pfpAnyoneCommand,
+    isPfpAnyoneEnabled
+} from './commands'; // Importing all commands from the barrel
+import { DISCORD_BOT_TOKEN, VERSION, BOTSPAM_CHANNEL_ID, getWILDCARD, DEBUG, GENERAL_CHANNEL_ID } from './config';
 import { logMessage } from './utils/log';
-import { welcomeCommand, welcomeNewMember } from './commands/welcome';
-import { handleWildcardCommand } from './commands/wildcard';
-import { handlePfpCommand } from './commands/pfp';
-import { pfpAnyoneCommand, isPfpAnyoneEnabled } from './commands/pfp-anyone';
 import versionInfoJson from '../version_info.json';
 
 // Define the type for versionInfo
