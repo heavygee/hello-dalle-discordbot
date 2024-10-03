@@ -17,16 +17,16 @@ export async function welcomeUser(client: Client, member: GuildMember): Promise<
     try {
         // Log the avatar URL
         const avatarUrl = member.user.displayAvatarURL({ extension: 'png' });
-        console.log(`Avatar URL: ${avatarUrl}`);
+        if (DEBUG) console.log(`DEBUG: Avatar URL: ${avatarUrl}`);
 
         // Download the avatar image
         const avatarPath = path.join(__dirname, '../../temp', `downloaded_avatar_${Date.now()}.png`);
-        console.log(`Submitting avatar for description: ${avatarUrl}`);
+        if (DEBUG) console.log(`DEBUG: Submitting avatar for description: ${avatarUrl}`);
         await downloadAndSaveImage(avatarUrl, avatarPath);
 
         // Describe the avatar image
         const avatarDescription = await describeImage(avatarPath, avatarUrl);
-        console.log(`Submitted avatar for description, result: ${avatarDescription}`);
+        if (DEBUG) console.log(`DEBUG: Submitted avatar for description, result: ${avatarDescription}`);
 
         // Generate prompt with the avatar description
         const randomNumber = Math.random() * 100;
@@ -38,7 +38,7 @@ export async function welcomeUser(client: Client, member: GuildMember): Promise<
 
         // Generate the welcome image
         const welcomeImageUrl = await generateImage(prompt);
-        console.log(`Generated image URL: ${welcomeImageUrl}`);
+        if (DEBUG) console.log(`DEBUG: Generated image URL: ${welcomeImageUrl}`);
 
         // Download the welcome image
         const welcomeImagePath = path.join(__dirname, '../../temp', `welcome_image_${Date.now()}.png`);
